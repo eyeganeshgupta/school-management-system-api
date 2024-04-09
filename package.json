@@ -1,0 +1,26 @@
+{
+  "name": "school-management-system-api",
+  "version": "1.0.0",
+  "description": "school-management-system-api\r |- users\r |- teachers / admin\r |- staff registration\r |- staff login\r |- admin withdrawing staff\r |- admin suspending staff\r |- creating exams\r |- promoting students\r |- staff withdrawal\r |- publish/unpublished results\r | - students\r |- writing exams\r |- checking exams results\r |- student can attempt exam twice\r |- exams remark",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "server": "nodemon server.js"
+  },
+  "keywords": [
+    "LMS",
+    "NodeJS",
+    "ExpressJS",
+    "MongoDB"
+  ],
+  "author": "Ganesh Gupta",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.19.2",
+    "mongoose": "^8.3.1"
+  },
+  "devDependencies": {
+    "morgan": "^1.10.0",
+    "nodemon": "^3.1.0"
+  }
+}
