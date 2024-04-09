@@ -1,12 +1,8 @@
-const express = require("express");
-const morgan = require("morgan");
-
-const app = express();
+const http = require("http");
+const app = require("./app/app");
 
 const PORT = 9717;
 
-// ! === Middleware ===
-app.use(morgan("dev"));
-
 // ! creating server
-app.listen(PORT, console.log(`Server is up and running on port ${PORT}`));
+const server = http.createServer(app);
+server.listen(PORT, console.log(`Server is up and running on port ${PORT}`));
