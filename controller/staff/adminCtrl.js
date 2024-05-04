@@ -9,7 +9,7 @@ exports.registerAdminCtrl = async (request, response) => {
     // TODO: check if user already exists
     const adminAlreadyExists = await Admin.findOne({ email });
     if (adminAlreadyExists) {
-      response.json("Admin already exists");
+      response.status(409).json("Admin already exists");
     }
 
     const admin = await Admin.create({
@@ -33,12 +33,26 @@ exports.registerAdminCtrl = async (request, response) => {
 // ! @desc Login admin
 // ! @route POST /api/admins/login
 // ! @access Private
-exports.loginAdminCtrl = (request, response) => {
+exports.loginAdminCtrl = async (request, response) => {
+  const { email, password } = request.body;
   try {
-    response.status(201).json({
-      status: "success",
-      data: "Admin has been logged in!",
-    });
+    // TODO: find user
+    const user = await Admin.findOne({ email });
+    if (!user) {
+      return response.status(404).json({
+        message: "Invalid login credentials",
+      });
+    }
+
+    if (user && (await user.verifyPassword(password))) {
+      return response.status(200).json({
+        data: user,
+      });
+    } else {
+      return response.status(403).json({
+        message: "Invalid login credentials",
+      });
+    }
   } catch (error) {
     response.json({
       status: "failed",
