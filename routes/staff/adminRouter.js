@@ -13,6 +13,7 @@ const {
   publishExamCtrl,
   unpublishExamCtrl,
 } = require("../../controller/staff/adminCtrl");
+const isLogin = require("../../middlewares/isLogin");
 
 const adminRouter = express.Router();
 
@@ -26,7 +27,7 @@ adminRouter.post("/login", loginAdminCtrl);
 adminRouter.get("/", getAllAdminCtrl);
 
 // * admin - getSingleAdmin
-adminRouter.get("/:id", getAdminCtrl);
+adminRouter.get("/:id", isLogin, getAdminCtrl);
 
 // * update admin
 adminRouter.put("/:id", updateAdminCtrl);

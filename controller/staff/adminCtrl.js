@@ -40,6 +40,9 @@ exports.loginAdminCtrl = async (request, response) => {
     }
 
     if (user && (await user.verifyPassword(password))) {
+      // TODO: save the user into request object
+      request.userAuth = user;
+
       return response.status(200).json({
         data: user,
       });
