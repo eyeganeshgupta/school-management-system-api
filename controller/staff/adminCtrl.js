@@ -41,11 +41,14 @@ exports.loginAdminCtrl = AsyncHandler(async (request, response) => {
   }
 
   if (user && (await user.verifyPassword(password))) {
-    // TODO: save the user into request object
-    request.userAuth = user;
+    const token = generateToken(user._id);
+
+    const verify = verifyToken(token);
 
     return response.status(200).json({
-      data: generateToken(user._id),
+      data: token,
+      user,
+      verify,
     });
   } else {
     return response.status(403).json({
