@@ -3,7 +3,6 @@ const {
   registerAdminCtrl,
   loginAdminCtrl,
   getAllAdminCtrl,
-  getAdminCtrl,
   updateAdminCtrl,
   deleteAdminCtrl,
   suspendTeacherCtrl,
@@ -12,6 +11,7 @@ const {
   unwithdrawTeacherCtrl,
   publishExamCtrl,
   unpublishExamCtrl,
+  getAdminProfileCtrl,
 } = require("../../controller/staff/adminCtrl");
 const isLogin = require("../../middlewares/isLogin");
 
@@ -26,8 +26,8 @@ adminRouter.post("/login", loginAdminCtrl);
 // * admin - getAllAdmin
 adminRouter.get("/", getAllAdminCtrl);
 
-// * admin - getSingleAdmin
-adminRouter.get("/:id", isLogin, getAdminCtrl);
+// * admin - get admin profile
+adminRouter.get("/profile", isLogin, getAdminProfileCtrl);
 
 // * update admin
 adminRouter.put("/:id", updateAdminCtrl);

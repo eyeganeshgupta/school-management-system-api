@@ -74,27 +74,27 @@ exports.getAllAdminCtrl = (request, response) => {
   }
 };
 
-// ! @desc Get single admin
+// ! @desc Get admin profile
 // ! @route GET /api/admins/:id
 // ! @access Private
-exports.getAdminCtrl = (request, response) => {
-  try {
-    response.status(201).json({
+exports.getAdminProfileCtrl = AsyncHandler(async (request, response) => {
+  const admin = await Admin.findById(request.userAuth._id).select(
+    "-password -createdAt -updatedAt"
+  );
+  if (!admin) {
+    throw new Error("Admin not found!");
+  } else {
+    response.status(200).json({
       status: "success",
-      data: "Single Admin!",
-    });
-  } catch (error) {
-    response.json({
-      status: "failed",
-      error: error?.message,
+      data: admin,
     });
   }
-};
+});
 
 // ! @desc Update admin
 // ! @route PUT /api/admins/:id
 // ! @access Private
-exports.updateAdminCtrl = (request, response) => {
+exports.updateAdminCtrl = async (request, response) => {
   try {
     response.status(201).json({
       status: "success",
@@ -111,7 +111,7 @@ exports.updateAdminCtrl = (request, response) => {
 // ! @desc Delete admin
 // ! @route DELETE /api/admins/:id
 // ! @access Private
-exports.deleteAdminCtrl = (request, response) => {
+exports.deleteAdminCtrl = async (request, response) => {
   try {
     response.status(201).json({
       status: "success",
@@ -128,7 +128,7 @@ exports.deleteAdminCtrl = (request, response) => {
 // ! @desc Admin suspending teacher
 // ! @route PUT /api/admins/suspend/teacher/:id
 // ! @access Private
-exports.suspendTeacherCtrl = (request, response) => {
+exports.suspendTeacherCtrl = async (request, response) => {
   try {
     response.status(201).json({
       status: "success",
@@ -145,7 +145,7 @@ exports.suspendTeacherCtrl = (request, response) => {
 // ! @desc Admin un-suspending teacher
 // ! @route PUT /api/admins/unsuspend/teacher/:id
 // ! @access Private
-exports.unsuspendTeacherCtrl = (request, response) => {
+exports.unsuspendTeacherCtrl = async (request, response) => {
   try {
     response.status(201).json({
       status: "success",
@@ -162,7 +162,7 @@ exports.unsuspendTeacherCtrl = (request, response) => {
 // ! @desc Admin withdrawing teacher
 // ! @route PUT /api/admins/withdraw/teacher/:id
 // ! @access Private
-exports.withdrawTeacherCtrl = (request, response) => {
+exports.withdrawTeacherCtrl = async (request, response) => {
   try {
     response.status(201).json({
       status: "success",
@@ -179,7 +179,7 @@ exports.withdrawTeacherCtrl = (request, response) => {
 // ! @desc Admin un-withdrawing teacher
 // ! @route PUT /api/admins/unwithdraw/teacher/:id
 // ! @access Private
-exports.unwithdrawTeacherCtrl = (request, response) => {
+exports.unwithdrawTeacherCtrl = async (request, response) => {
   try {
     response.status(201).json({
       status: "success",
