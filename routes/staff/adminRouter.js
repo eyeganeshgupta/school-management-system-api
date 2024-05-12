@@ -23,11 +23,11 @@ adminRouter.post("/register", registerAdminCtrl);
 // * admin login
 adminRouter.post("/login", loginAdminCtrl);
 
-// * admin - getAllAdmin
-adminRouter.get("/", getAllAdminCtrl);
-
 // * admin - get admin profile
 adminRouter.get("/profile", isLogin, getAdminProfileCtrl);
+
+// * admin - getAllAdmin
+adminRouter.get("/", isLogin, getAllAdminCtrl);
 
 // * update admin
 adminRouter.put("/:id", updateAdminCtrl);

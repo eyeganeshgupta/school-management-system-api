@@ -75,19 +75,14 @@ exports.getAdminProfileCtrl = AsyncHandler(async (request, response) => {
 // ! @desc Get all admin
 // ! @route GET /api/admins/
 // ! @access Private
-exports.getAllAdminCtrl = (request, response) => {
-  try {
-    response.status(201).json({
-      status: "success",
-      data: "All admins!",
-    });
-  } catch (error) {
-    response.json({
-      status: "failed",
-      error: error?.message,
-    });
-  }
-};
+exports.getAllAdminCtrl = AsyncHandler(async (request, response) => {
+  const admins = await Admin.find();
+  response.status(200).json({
+    status: "success",
+    message: "Admin fetched successfully!",
+    data: admins,
+  });
+});
 
 // ! @desc Update admin
 // ! @route PUT /api/admins/:id
