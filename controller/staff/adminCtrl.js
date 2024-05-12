@@ -23,6 +23,7 @@ exports.registerAdminCtrl = AsyncHandler(async (request, response) => {
   response.status(201).json({
     status: "success",
     data: admin,
+    message: "Admin registered successfully!",
   });
 });
 
@@ -34,6 +35,7 @@ exports.loginAdminCtrl = AsyncHandler(async (request, response) => {
 
   // TODO: find user
   const user = await Admin.findOne({ email });
+
   if (!user) {
     return response.status(404).json({
       message: "Invalid login credentials",
@@ -41,18 +43,31 @@ exports.loginAdminCtrl = AsyncHandler(async (request, response) => {
   }
 
   if (user && (await user.verifyPassword(password))) {
-    const token = generateToken(user._id);
-
-    const verify = verifyToken(token);
-
     return response.status(200).json({
-      data: token,
-      user,
-      verify,
+      data: generateToken(user._id),
+      message: "Admin logged in successfully!",
     });
   } else {
     return response.status(403).json({
       message: "Invalid login credentials",
+    });
+  }
+});
+
+// ! @desc Get admin profile
+// ! @route GET /api/admins/:id
+// ! @access Private
+exports.getAdminProfileCtrl = AsyncHandler(async (request, response) => {
+  const admin = await Admin.findById(request.userAuth._id).select(
+    "-password -createdAt -updatedAt"
+  );
+  if (!admin) {
+    throw new Error("Admin not found!");
+  } else {
+    response.status(200).json({
+      status: "success",
+      data: admin,
+      message: "Fetched admin profile successfully!",
     });
   }
 });
@@ -73,23 +88,6 @@ exports.getAllAdminCtrl = (request, response) => {
     });
   }
 };
-
-// ! @desc Get admin profile
-// ! @route GET /api/admins/:id
-// ! @access Private
-exports.getAdminProfileCtrl = AsyncHandler(async (request, response) => {
-  const admin = await Admin.findById(request.userAuth._id).select(
-    "-password -createdAt -updatedAt"
-  );
-  if (!admin) {
-    throw new Error("Admin not found!");
-  } else {
-    response.status(200).json({
-      status: "success",
-      data: admin,
-    });
-  }
-});
 
 // ! @desc Update admin
 // ! @route PUT /api/admins/:id
