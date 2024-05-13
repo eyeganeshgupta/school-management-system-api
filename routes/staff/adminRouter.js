@@ -14,6 +14,7 @@ const {
   getAdminProfileCtrl,
 } = require("../../controller/staff/adminCtrl");
 const isLogin = require("../../middlewares/isLogin");
+const isAdmin = require("../../middlewares/isAdmin");
 
 const adminRouter = express.Router();
 
@@ -24,7 +25,7 @@ adminRouter.post("/register", registerAdminCtrl);
 adminRouter.post("/login", loginAdminCtrl);
 
 // * admin - get admin profile
-adminRouter.get("/profile", isLogin, getAdminProfileCtrl);
+adminRouter.get("/profile", isLogin, isAdmin, getAdminProfileCtrl);
 
 // * admin - getAllAdmin
 adminRouter.get("/", isLogin, getAllAdminCtrl);

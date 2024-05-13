@@ -87,19 +87,10 @@ exports.getAllAdminCtrl = AsyncHandler(async (request, response) => {
 // ! @desc Update admin
 // ! @route PUT /api/admins/:id
 // ! @access Private
-exports.updateAdminCtrl = async (request, response) => {
-  try {
-    response.status(201).json({
-      status: "success",
-      data: "Update admin!",
-    });
-  } catch (error) {
-    response.json({
-      status: "failed",
-      error: error?.message,
-    });
-  }
-};
+exports.updateAdminCtrl = AsyncHandler(async (request, response) => {
+  // TODO: find the admin
+  const adminFound = await Admin.findById(request.userAuth._id);
+});
 
 // ! @desc Delete admin
 // ! @route DELETE /api/admins/:id
