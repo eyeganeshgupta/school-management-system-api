@@ -31,7 +31,7 @@ adminRouter.get("/profile", isLogin, isAdmin, getAdminProfileCtrl);
 adminRouter.get("/", isLogin, getAllAdminCtrl);
 
 // * update admin
-adminRouter.put("/:id", updateAdminCtrl);
+adminRouter.put("/", isLogin, isAdmin, updateAdminCtrl);
 
 // * delete admin
 adminRouter.delete("/:id", deleteAdminCtrl);

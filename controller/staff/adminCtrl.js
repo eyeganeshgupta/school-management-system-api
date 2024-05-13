@@ -88,8 +88,32 @@ exports.getAllAdminCtrl = AsyncHandler(async (request, response) => {
 // ! @route PUT /api/admins/:id
 // ! @access Private
 exports.updateAdminCtrl = AsyncHandler(async (request, response) => {
-  // TODO: find the admin
-  const adminFound = await Admin.findById(request.userAuth._id);
+  const { name, email, password } = request.body;
+
+  // TODO: if email is taken
+  const emailExist = await Admin.findOne({ email });
+  if (emailExist) {
+    throw new Error("This email is taken/exist");
+  } else {
+    // TODO: update
+    const admin = await Admin.findByIdAndUpdate(
+      request.userAuth._id,
+      {
+        email,
+        password,
+        name,
+      },
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
+    response.status(201).json({
+      status: "success",
+      data: admin,
+      message: "Admin profile successfully updated.",
+    });
+  }
 });
 
 // ! @desc Delete admin
