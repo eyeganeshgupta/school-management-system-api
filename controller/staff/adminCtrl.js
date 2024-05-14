@@ -2,6 +2,7 @@ const bcrypt = require("bcryptjs");
 const Admin = require("../../model/Staff/Admin");
 const AsyncHandler = require("express-async-handler");
 const generateToken = require("../../utils/generateToken");
+const { hashPassword, isPasswordMatched } = require("../../utils/helpers");
 
 // ! @desc Register admin
 // ! @route POST /api/admins/register
@@ -15,15 +16,10 @@ exports.registerAdminCtrl = AsyncHandler(async (request, response) => {
     throw new Error("Admin already exists");
   }
 
-  // TODO: create salt
-  const salt = await bcrypt.genSalt(10);
-  // TODO: Hash password
-  const hashedPassword = await bcrypt.hash(password, salt);
-
   const admin = await Admin.create({
     name,
     email,
-    password: hashedPassword,
+    password: await hashPassword(password),
   });
 
   response.status(201).json({
@@ -49,7 +45,7 @@ exports.loginAdminCtrl = AsyncHandler(async (request, response) => {
   }
 
   // TODO: verify password
-  const isMatched = await bcrypt.compare(password, user.password);
+  const isMatched = await isPasswordMatched(password, user.password);
 
   if (!isMatched) {
     return response.status(403).json({
@@ -105,18 +101,13 @@ exports.updateAdminCtrl = AsyncHandler(async (request, response) => {
     throw new Error("This email is taken/exist");
   }
 
-  // TODO: create salt
-  const salt = await bcrypt.genSalt(10);
-  // TODO: Hash password
-  const hashedPassword = await bcrypt.hash(password, salt);
-
   // TODO: check if user is updating the password
   if (password) {
     const admin = await Admin.findByIdAndUpdate(
       request.userAuth._id,
       {
         email,
-        password: hashedPassword,
+        password: await hashPassword(password),
         name,
       },
       {
