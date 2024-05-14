@@ -103,13 +103,37 @@ exports.updateAdminCtrl = AsyncHandler(async (request, response) => {
   const emailExist = await Admin.findOne({ email });
   if (emailExist) {
     throw new Error("This email is taken/exist");
-  } else {
-    // TODO: update
+  }
+
+  // TODO: create salt
+  const salt = await bcrypt.genSalt(10);
+  // TODO: Hash password
+  const hashedPassword = await bcrypt.hash(password, salt);
+
+  // TODO: check if user is updating the password
+  if (password) {
     const admin = await Admin.findByIdAndUpdate(
       request.userAuth._id,
       {
         email,
-        password,
+        password: hashedPassword,
+        name,
+      },
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
+    response.status(201).json({
+      status: "success",
+      data: admin,
+      message: "Admin profile successfully updated.",
+    });
+  } else {
+    const admin = await Admin.findByIdAndUpdate(
+      request.userAuth._id,
+      {
+        email,
         name,
       },
       {
