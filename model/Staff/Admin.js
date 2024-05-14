@@ -55,26 +55,6 @@ const AdminSchema = new mongoose.Schema(
   }
 );
 
-// TODO: hash password
-AdminSchema.pre("save", async function (next) {
-  // * If user is not modifying the password, then simply move to the next middleware
-  if (!this.isModified("password")) {
-    next();
-  }
-
-  // TODO: 01. create salt
-  const salt = await bcrypt.genSalt(10);
-  // TODO: 02. Hash password
-  this.password = await bcrypt.hash(this.password, salt);
-
-  next();
-});
-
-// TODO: verify password
-AdminSchema.methods.verifyPassword = async function (enteredPassword) {
-  return await bcrypt.compare(enteredPassword, this.password);
-};
-
 // ! model
 const Admin = mongoose.model("Admin", AdminSchema);
 

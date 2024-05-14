@@ -1,3 +1,4 @@
+const bcrypt = require("bcryptjs");
 const Admin = require("../../model/Staff/Admin");
 const AsyncHandler = require("express-async-handler");
 const generateToken = require("../../utils/generateToken");
@@ -14,10 +15,15 @@ exports.registerAdminCtrl = AsyncHandler(async (request, response) => {
     throw new Error("Admin already exists");
   }
 
+  // TODO: create salt
+  const salt = await bcrypt.genSalt(10);
+  // TODO: Hash password
+  const hashedPassword = await bcrypt.hash(password, salt);
+
   const admin = await Admin.create({
     name,
     email,
-    password,
+    password: hashedPassword,
   });
 
   response.status(201).json({
@@ -37,19 +43,22 @@ exports.loginAdminCtrl = AsyncHandler(async (request, response) => {
   const user = await Admin.findOne({ email });
 
   if (!user) {
-    return response.status(404).json({
+    return response.status(403).json({
       message: "Invalid login credentials",
     });
   }
 
-  if (user && (await user.verifyPassword(password))) {
-    return response.status(200).json({
-      data: generateToken(user._id),
-      message: "Admin logged in successfully!",
-    });
-  } else {
+  // TODO: verify password
+  const isMatched = await bcrypt.compare(password, user.password);
+
+  if (!isMatched) {
     return response.status(403).json({
       message: "Invalid login credentials",
+    });
+  } else {
+    return response.status(200).json({
+      data: generateToken(user._id),
+      message: "Verification successful for admin authentication!",
     });
   }
 });
