@@ -32,7 +32,7 @@ exports.createAcademicYearCtrl = AsyncHandler(async (request, response) => {
 // ! @desc Get all academic years
 // ! @route GET /api/v1/academic-years
 // ! @access Private
-exports.getAcademicYears = AsyncHandler(async (request, response) => {
+exports.getAcademicYearsCtrl = AsyncHandler(async (request, response) => {
   const academicYears = await AcademicYear.find();
   response.status(200).json({
     status: "success",
@@ -44,12 +44,44 @@ exports.getAcademicYears = AsyncHandler(async (request, response) => {
 // ! @desc Get single academic year
 // ! @route GET /api/v1/academic-years/:id
 // ! @access Private
-exports.getAcademicYear = AsyncHandler(async (request, response) => {
+exports.getAcademicYearCtrl = AsyncHandler(async (request, response) => {
   const academicYear = await AcademicYear.findById(request.params.id);
 
   response.status(200).json({
     status: "success",
     message: "Academic year fetched successfully!",
+    data: academicYear,
+  });
+});
+
+// ! @desc Update Academic year
+// ! @route GET /api/v1/academic-years/:id
+// ! @access Private
+exports.updateAcademicYearCtrl = AsyncHandler(async (request, response) => {
+  const { name, fromYear, toYear } = request.body;
+
+  // TODO: check name exits
+  const academicYearFound = await AcademicYear.findOne({ name });
+  if (academicYearFound) {
+    throw new Error("Academic year already exists!");
+  }
+
+  const academicYear = await AcademicYear.findByIdAndUpdate(
+    request.params.id,
+    {
+      name,
+      fromYear,
+      toYear,
+      createdBy: request.userAuth._id,
+    },
+    {
+      new: true,
+    }
+  );
+
+  response.status(201).json({
+    status: "success",
+    message: "Academic year updated successfully!",
     data: academicYear,
   });
 });
