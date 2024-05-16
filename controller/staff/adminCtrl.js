@@ -5,7 +5,7 @@ const generateToken = require("../../utils/generateToken");
 const { hashPassword, isPasswordMatched } = require("../../utils/helpers");
 
 // ! @desc Register admin
-// ! @route POST /api/admins/register
+// ! @route POST /api/v1/admins/register
 // ! @access Private
 exports.registerAdminCtrl = AsyncHandler(async (request, response) => {
   const { name, email, password } = request.body;
@@ -30,7 +30,7 @@ exports.registerAdminCtrl = AsyncHandler(async (request, response) => {
 });
 
 // ! @desc Login admin
-// ! @route POST /api/admins/login
+// ! @route POST /api/v1/admins/login
 // ! @access Private
 exports.loginAdminCtrl = AsyncHandler(async (request, response) => {
   const { email, password } = request.body;
@@ -60,7 +60,7 @@ exports.loginAdminCtrl = AsyncHandler(async (request, response) => {
 });
 
 // ! @desc Get admin profile
-// ! @route GET /api/admins/:id
+// ! @route GET /api/v1/admins/:id
 // ! @access Private
 exports.getAdminProfileCtrl = AsyncHandler(async (request, response) => {
   const admin = await Admin.findById(request.userAuth._id).select(
@@ -78,7 +78,7 @@ exports.getAdminProfileCtrl = AsyncHandler(async (request, response) => {
 });
 
 // ! @desc Get all admin
-// ! @route GET /api/admins/
+// ! @route GET /api/v1/admins/
 // ! @access Private
 exports.getAllAdminCtrl = AsyncHandler(async (request, response) => {
   const admins = await Admin.find();
@@ -90,7 +90,7 @@ exports.getAllAdminCtrl = AsyncHandler(async (request, response) => {
 });
 
 // ! @desc Update admin
-// ! @route PUT /api/admins/:id
+// ! @route PUT /api/v1/admins/:id
 // ! @access Private
 exports.updateAdminCtrl = AsyncHandler(async (request, response) => {
   const { name, email, password } = request.body;
@@ -141,7 +141,7 @@ exports.updateAdminCtrl = AsyncHandler(async (request, response) => {
 });
 
 // ! @desc Delete admin
-// ! @route DELETE /api/admins/:id
+// ! @route DELETE /api/v1/admins/:id
 // ! @access Private
 exports.deleteAdminCtrl = async (request, response) => {
   try {
@@ -158,7 +158,7 @@ exports.deleteAdminCtrl = async (request, response) => {
 };
 
 // ! @desc Admin suspending teacher
-// ! @route PUT /api/admins/suspend/teacher/:id
+// ! @route PUT /api/v1/admins/suspend/teacher/:id
 // ! @access Private
 exports.suspendTeacherCtrl = async (request, response) => {
   try {
@@ -175,7 +175,7 @@ exports.suspendTeacherCtrl = async (request, response) => {
 };
 
 // ! @desc Admin un-suspending teacher
-// ! @route PUT /api/admins/unsuspend/teacher/:id
+// ! @route PUT /api/v1/admins/unsuspend/teacher/:id
 // ! @access Private
 exports.unsuspendTeacherCtrl = async (request, response) => {
   try {
@@ -192,7 +192,7 @@ exports.unsuspendTeacherCtrl = async (request, response) => {
 };
 
 // ! @desc Admin withdrawing teacher
-// ! @route PUT /api/admins/withdraw/teacher/:id
+// ! @route PUT /api/v1/admins/withdraw/teacher/:id
 // ! @access Private
 exports.withdrawTeacherCtrl = async (request, response) => {
   try {
@@ -209,7 +209,7 @@ exports.withdrawTeacherCtrl = async (request, response) => {
 };
 
 // ! @desc Admin un-withdrawing teacher
-// ! @route PUT /api/admins/unwithdraw/teacher/:id
+// ! @route PUT /api/v1/admins/unwithdraw/teacher/:id
 // ! @access Private
 exports.unwithdrawTeacherCtrl = async (request, response) => {
   try {
@@ -226,7 +226,7 @@ exports.unwithdrawTeacherCtrl = async (request, response) => {
 };
 
 // ! @desc Admin publishing examination result
-// ! @route PUT /api/admins/publish/exam/:id
+// ! @route PUT /api/v1/admins/publish/exam/:id
 // ! @access Private
 exports.publishExamCtrl = (request, response) => {
   try {
@@ -243,7 +243,7 @@ exports.publishExamCtrl = (request, response) => {
 };
 
 // ! @desc Admin un-publishing examination result
-// ! @route PUT /api/admins/unpublish/exam/:id
+// ! @route PUT /api/v1/admins/unpublish/exam/:id
 // ! @access Private
 exports.unpublishExamCtrl = (request, response) => {
   try {
