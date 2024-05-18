@@ -33,3 +33,16 @@ exports.createAcademicTermCtrl = AysncHandler(async (req, res) => {
     data: academicTermCreated,
   });
 });
+
+// ! @desc  get all Academic terms
+// ! @route GET /api/v1/academic-terms
+// ! @acess  Private
+exports.getAcademicTermsCtrl = AysncHandler(async (req, res) => {
+  const academicTerms = await AcademicTerm.find();
+
+  res.status(201).json({
+    status: "success",
+    message: "Successfully retrieved the academic terms.",
+    data: academicTerms,
+  });
+});
