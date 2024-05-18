@@ -86,7 +86,19 @@ exports.updateAcademicTermCtrl = AysncHandler(async (request, response) => {
 
   response.status(201).json({
     status: "success",
-    message: "Academic term updated successfully",
+    message: "Successfully updated the academic term.",
     data: academicTerm,
+  });
+});
+
+// ! @desc   Delete  Academic term
+// ! @route  PUT /api/v1/academic-terms/:id
+// ! @acess  Private
+exports.deleteAcademicTermCtrl = AysncHandler(async (request, response) => {
+  await AcademicTerm.findByIdAndDelete(request.params.id);
+
+  response.status(201).json({
+    status: "success",
+    message: "Successfully erased the academic term.",
   });
 });
