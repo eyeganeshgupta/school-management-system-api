@@ -59,3 +59,34 @@ exports.getAcademicTermCtrl = AysncHandler(async (request, response) => {
     data: academicTerm,
   });
 });
+
+// ! @desc   Update  Academic term
+// ! @route  PUT /api/v1/academic-terms/:id
+// ! @acess  Private
+exports.updateAcademicTermCtrl = AysncHandler(async (request, response) => {
+  const { name, description, duration } = request.body;
+
+  // TODO: check name exists
+  const createAcademicTermFound = await AcademicTerm.findOne({ name });
+  if (createAcademicTermFound) {
+    throw new Error("Academic terms already exists");
+  }
+  const academicTerm = await AcademicTerm.findByIdAndUpdate(
+    request.params.id,
+    {
+      name,
+      description,
+      duration,
+      createdBy: request.userAuth._id,
+    },
+    {
+      new: true,
+    }
+  );
+
+  response.status(201).json({
+    status: "success",
+    message: "Academic term updated successfully",
+    data: academicTerm,
+  });
+});
