@@ -37,7 +37,7 @@ exports.createClassLevelCtrl = AysncHandler(async (request, response) => {
 // ! @desc  get all class levels
 // ! @route GET /api/v1/class-levels
 // ! @acess  Private
-exports.getClassLevels = AysncHandler(async (request, response) => {
+exports.getClassLevelsCtrl = AysncHandler(async (request, response) => {
   const classes = await ClassLevel.find();
   response.status(200).json({
     status: "success",
@@ -49,11 +49,42 @@ exports.getClassLevels = AysncHandler(async (request, response) => {
 // ! @desc  get single Class level
 // ! @route GET /api/v1/class-levels/:id
 // ! @acess  Private
-exports.getClassLevel = AysncHandler(async (request, response) => {
+exports.getClassLevelCtrl = AysncHandler(async (request, response) => {
   const classLevel = await ClassLevel.findById(request.params.id);
   response.status(200).json({
     status: "success",
     message: "Class fetched successfully",
+    data: classLevel,
+  });
+});
+
+// ! @desc   Update  Class Level
+// ! @route  PUT /api/v1/class-levels/:id
+// ! @acess  Private
+exports.updateClassLevelCtrl = AysncHandler(async (request, response) => {
+  const { name, description } = request.body;
+
+  // TODO: check name exists
+  const classFound = await ClassLevel.findOne({ name });
+  if (classFound) {
+    throw new Error("Class already exists");
+  }
+
+  const classLevel = await ClassLevel.findByIdAndUpdate(
+    request.params.id,
+    {
+      name,
+      description,
+      createdBy: request.userAuth._id,
+    },
+    {
+      new: true,
+    }
+  );
+
+  response.status(201).json({
+    status: "success",
+    message: "The class has been successfully updated.",
     data: classLevel,
   });
 });
