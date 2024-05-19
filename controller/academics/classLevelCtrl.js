@@ -45,3 +45,15 @@ exports.getClassLevels = AysncHandler(async (request, response) => {
     data: classes,
   });
 });
+
+// ! @desc  get single Class level
+// ! @route GET /api/v1/class-levels/:id
+// ! @acess  Private
+exports.getClassLevel = AysncHandler(async (request, response) => {
+  const classLevel = await ClassLevel.findById(request.params.id);
+  response.status(200).json({
+    status: "success",
+    message: "Class fetched successfully",
+    data: classLevel,
+  });
+});
