@@ -33,3 +33,15 @@ exports.createClassLevelCtrl = AysncHandler(async (request, response) => {
     data: classCreated,
   });
 });
+
+// ! @desc  get all class levels
+// ! @route GET /api/v1/class-levels
+// ! @acess  Private
+exports.getClassLevels = AysncHandler(async (request, response) => {
+  const classes = await ClassLevel.find();
+  response.status(200).json({
+    status: "success",
+    message: "Class Levels fetched successfully",
+    data: classes,
+  });
+});
