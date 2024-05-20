@@ -88,3 +88,14 @@ exports.updateClassLevelCtrl = AysncHandler(async (request, response) => {
     data: classLevel,
   });
 });
+
+// ! @desc   Delete  class level
+// ! @route  PUT /api/v1/aclass-levels/:id
+// ! @acess  Private
+exports.deleteClassLevel = AysncHandler(async (request, response) => {
+  await ClassLevel.findByIdAndDelete(request.params.id);
+  response.status(202).json({
+    status: "success",
+    message: "Class level deleted successfully",
+  });
+});
